@@ -1,0 +1,263 @@
+
+<div class="max-w-4xl mx-auto bg-white dark:bg-[#1a1a14] p-10 rounded-4xl shadow-card border border-primary-100 dark:border-primary-900/30 transition-all duration-500 animate-fade-in">
+  <div class="mb-10 pb-8 border-b border-primary-50 dark:border-primary-900/20 flex justify-between items-center">
+    <div>
+      <h1 class="serif text-3xl font-bold text-primary-950 dark:text-primary-50">تسديد الأقساط المدرسية</h1>
+      <p class="text-sm text-primary-600/60 dark:text-primary-400/60 mt-2 font-medium">ابحث عن الطالب لإدارة وتحديث سجل الدفعات المالية الخاصة به.</p>
+    </div>
+    <div class="w-14 h-14 bg-primary-50 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center text-primary-600 dark:text-primary-400 border border-primary-100 dark:border-primary-800 shadow-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 9.5h20"/></svg>
+    </div>
+  </div>
+
+  @if (!selectedStudent()) {
+    <div class="animate-fade-in">
+      <div class="mb-8">
+        <label for="search" class="block mb-3 text-sm font-bold text-primary-900 dark:text-primary-100 tracking-wide">ابحث عن اسم الطالب</label>
+        <div class="relative group">
+             <input type="text" id="search" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+               class="w-full bg-primary-50/30 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-800 text-primary-950 dark:text-primary-50 text-lg rounded-2xl focus:ring-4 focus:ring-primary-600/10 focus:border-primary-600 block p-5 pl-14 transition-all outline-none shadow-sm placeholder:text-primary-300"
+               placeholder="اكتب اسم الطالب هنا للبحث...">
+             <div class="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none text-primary-300 group-focus-within:text-primary-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+             </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 max-h-[450px] overflow-y-auto border border-primary-50 dark:border-primary-900/20 rounded-3xl bg-white dark:bg-primary-950/20 shadow-inner custom-scrollbar">
+        <div class="p-5 bg-primary-50/50 dark:bg-primary-900/30 border-b border-primary-50 dark:border-primary-900/20 flex justify-between items-center sticky top-0 z-10 backdrop-blur-md">
+            <h3 class="text-xs font-bold text-primary-400 uppercase tracking-widest flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary-600"></span>
+                نتائج البحث (@if(filteredStudents().length){ {{ filteredStudents().length }} } @else { 0 })
+            </h3>
+        </div>
+        <ul class="divide-y divide-primary-50 dark:divide-primary-900/10">
+            @for (student of filteredStudents(); track student.id) {
+            <li (click)="selectStudent(student)" class="p-5 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/10 flex justify-between items-center transition-all group">
+                <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold group-hover:bg-primary-600 group-hover:text-white transition-all border border-primary-100 dark:border-primary-800 shadow-sm">
+                    {{ student.name.charAt(0) }}
+                </div>
+                <div>
+                    <p class="font-bold text-primary-950 dark:text-primary-50 group-hover:text-primary-700 dark:group-hover:text-primary-400 transition-colors">{{ student.name }}</p>
+                    <p class="text-xs text-primary-400 font-bold mt-1 uppercase tracking-widest">{{ student.class }}</p>
+                </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[10px] font-bold bg-primary-50 dark:bg-primary-900/30 text-primary-400 px-4 py-1.5 rounded-full group-hover:bg-primary-600 group-hover:text-white transition-all border border-primary-100 dark:border-primary-800 uppercase tracking-widest">اختيار الطالب</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary-200 group-hover:text-primary-600 transition-all transform group-hover:-translate-x-1"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </div>
+            </li>
+            } @empty {
+            <li class="p-16 text-center">
+                <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/10 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </div>
+                <p class="text-primary-400 font-bold">لا يوجد طلاب مطابقين للبحث حالياً</p>
+            </li>
+            }
+        </ul>
+      </div>
+    </div>
+  } @else {
+    <div class="animate-fade-in">
+      <div class="mb-10 p-8 bg-primary-50/50 dark:bg-primary-900/10 rounded-3xl border border-primary-100 dark:border-primary-900/20 flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-5">
+            <div class="w-16 h-16 rounded-2xl bg-primary-600 flex items-center justify-center text-white text-2xl font-bold shadow-xl shadow-primary-600/20">
+                {{ selectedStudent()?.name?.charAt(0) }}
+            </div>
+            <div>
+                <h2 class="serif text-2xl font-bold text-primary-950 dark:text-primary-50">{{ selectedStudent()?.name }}</h2>
+                <p class="text-xs text-primary-400 font-bold mt-1 uppercase tracking-widest">{{ selectedStudent()?.class }}</p>
+            </div>
+        </div>
+        <button (click)="cancel()" class="text-xs font-bold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-200 uppercase tracking-widest transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
+            تغيير الطالب
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        @for (inst of selectedStudent()?.installments; track $index) {
+          <div class="relative group">
+            <label class="block mb-3 text-[10px] font-bold text-primary-400 dark:text-primary-600 uppercase tracking-widest text-center">القسط {{ $index + 1 }}</label>
+            <div class="relative">
+                <input type="text" [value]="formatNumber(inst.amount)" (input)="updateInstallment($index, $event)"
+                       class="w-full p-4 border border-primary-100 dark:border-primary-800 rounded-2xl text-center focus:ring-4 focus:ring-primary-600/10 focus:border-primary-600 bg-primary-50/20 dark:bg-primary-900/5 text-primary-950 dark:text-primary-50 shadow-sm transition-all outline-none serif font-bold text-xl"
+                       [class.border-primary-400]="inst.amount > 0"
+                       [class.bg-primary-50]="inst.amount > 0"
+                       [class.dark:bg-primary-900/20]="inst.amount > 0"
+                       [class.text-primary-700]="inst.amount > 0"
+                       [class.dark:text-primary-400]="inst.amount > 0"
+                       >
+                @if(inst.amount > 0) {
+                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-primary-600 rounded-full border-2 border-white dark:border-primary-900 shadow-sm"></div>
+                }
+            </div>
+          </div>
+        }
+        <div class="flex items-end">
+             <button (click)="addInstallment()" class="w-full h-[62px] border-2 border-dashed border-primary-100 dark:border-primary-800 rounded-2xl text-primary-300 dark:text-primary-700 hover:border-primary-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/10 flex items-center justify-center transition-all font-bold gap-3 group">
+                <div class="w-8 h-8 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                <span class="text-sm uppercase tracking-widest">شهر جديد</span>
+             </button>
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-primary-50 dark:border-primary-900/20 pt-10 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="bg-primary-600 text-white px-8 py-4 rounded-3xl shadow-xl shadow-primary-600/20 flex flex-col items-center md:items-start">
+            <span class="text-[10px] font-bold text-white/70 uppercase tracking-widest">إجمالي الواصل الجديد</span>
+            <span class="serif text-3xl font-bold mt-1">{{ formatCurrency(totalPaid()) }}</span>
+        </div>
+        <div class="flex gap-4 w-full md:w-auto">
+            <button (click)="cancel()" class="flex-1 md:flex-none px-8 py-4 rounded-2xl font-bold text-primary-400 hover:text-primary-600 dark:text-primary-600 dark:hover:text-primary-400 transition-all border border-transparent hover:border-primary-100 dark:hover:border-primary-800 uppercase tracking-widest text-xs">إلغاء</button>
+            
+            @if(currentPaymentDetails().total > 0) {
+              <button (click)="openReceiptModal()" class="flex-1 md:flex-none bg-primary-950 dark:bg-primary-50 dark:text-primary-950 text-white px-8 py-4 rounded-2xl hover:bg-black dark:hover:bg-white transition-all font-bold shadow-xl shadow-primary-950/20 flex items-center justify-center gap-3">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                 معاينة الوصل
+              </button>
+            }
+
+            <button (click)="savePayments()" class="flex-1 md:flex-none bg-primary-600 text-white px-10 py-4 rounded-2xl hover:bg-primary-700 transition-all font-bold shadow-xl shadow-primary-600/30 flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                حفظ التغييرات
+            </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Professional Receipt Modal -->
+@if(showReceiptModal()) {
+    <div class="fixed inset-0 bg-primary-950/40 backdrop-blur-md z-50 flex items-center justify-center p-6 animate-fade-in">
+        <div class="bg-white w-full max-w-3xl max-h-[95vh] rounded-4xl shadow-2xl flex flex-col overflow-hidden border border-primary-100">
+            
+            <!-- Actions Header -->
+            <div class="p-6 border-b border-primary-50 flex justify-between items-center bg-primary-50/30 no-print">
+                <h3 class="font-bold text-primary-900 serif text-xl">معاينة وصل الاستلام المالي</h3>
+                <div class="flex gap-3">
+                    <button (click)="closeReceiptModal()" class="px-6 py-3 text-primary-400 hover:text-primary-600 hover:bg-primary-100 rounded-2xl text-sm font-bold transition-all">إغلاق</button>
+                    <button (click)="printReceipt()" class="px-8 py-3 bg-primary-950 text-white rounded-2xl text-sm font-bold flex items-center gap-3 hover:bg-black transition-all shadow-xl shadow-primary-950/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                        طباعة الوصل الآن
+                    </button>
+                </div>
+            </div>
+
+            <!-- Printable Area -->
+            <div class="overflow-y-auto bg-primary-50/20 p-10 print:p-0 print:bg-white custom-scrollbar" id="print-section">
+                <div class="bg-white p-16 shadow-sm border border-primary-50 print:shadow-none print:border-none max-w-[210mm] mx-auto min-h-[148mm] rounded-3xl print:rounded-none">
+                    
+                    <!-- Header -->
+                    <div class="flex justify-between items-start border-b-2 border-primary-950 pb-8 mb-10">
+                        <div class="text-right">
+                             <div class="flex items-center gap-5 mb-3">
+                                @if(settings().schoolLogo) {
+                                    <img [src]="settings().schoolLogo" class="w-20 h-20 object-contain rounded-2xl">
+                                } @else {
+                                    <div class="w-16 h-16 bg-primary-950 text-white flex items-center justify-center rounded-2xl">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                                    </div>
+                                }
+                                <h1 class="serif text-3xl font-bold text-primary-950">{{ settings().schoolName }}</h1>
+                             </div>
+                             <p class="text-sm text-primary-500 font-bold mr-1">للعام الدراسي {{ settings().academicYear }}</p>
+                        </div>
+                        <div class="text-left">
+                            <div class="mb-3">
+                                <span class="text-[10px] font-bold text-primary-300 uppercase tracking-widest">تاريخ الإصدار</span>
+                                <p class="text-sm font-bold text-primary-950 dir-ltr">{{ receiptDate() }}</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-primary-300 uppercase tracking-widest">رقم الوصل</span>
+                                <p class="serif text-2xl font-bold text-primary-950">{{ receiptId() }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="text-center mb-10">
+                        <span class="inline-block px-12 py-3 border-2 border-primary-950 text-primary-950 font-bold text-2xl rounded-full serif">
+                            وصل استلام قسط مالي
+                        </span>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="space-y-8 text-xl leading-relaxed text-primary-900 mb-10">
+                        <p>
+                            تم استلام مبلغ وقدره 
+                            <span class="serif font-bold bg-primary-50 px-4 py-1.5 rounded-xl mx-2 border border-primary-100">{{ formatReceiptNumber(currentPaymentDetails().total) }}</span>
+                            من السيد / الطالب 
+                            <span class="serif font-bold border-b-2 border-primary-100 px-3">{{ selectedStudent()?.name }}</span>
+                            في الصف 
+                            <span class="serif font-bold border-b-2 border-primary-100 px-3">{{ selectedStudent()?.class }}</span>
+                        </p>
+                        <p>
+                            وذلك عن القسط المدرسي المستحق بتاريخ <span class="font-bold mx-2">{{ receiptDate().split(',')[0] }}</span>، وأدناه تفاصيل الحالة المالية للطالب بعد التسديد:
+                        </p>
+                    </div>
+
+                    <!-- Financial Summary (Replaces Table) -->
+                    <div class="bg-primary-50/50 rounded-3xl border border-primary-50 p-8 mb-10 print:bg-primary-50 print:border-primary-100">
+                        <div class="grid grid-cols-3 divide-x divide-x-reverse divide-primary-100">
+                            <div class="px-6 text-center">
+                                <p class="text-primary-400 font-bold text-xs mb-3 uppercase tracking-widest">القسط الكلي</p>
+                                <p class="serif text-2xl font-bold text-primary-950">{{ formatReceiptNumber(selectedStudent()?.totalFee || 0) }}</p>
+                            </div>
+                            <div class="px-6 text-center">
+                                <p class="text-primary-600 font-bold text-xs mb-3 uppercase tracking-widest">إجمالي الواصل</p>
+                                <p class="serif text-2xl font-bold text-primary-700">{{ formatReceiptNumber(totalPaid()) }}</p>
+                            </div>
+                            <div class="px-6 text-center">
+                                <p class="text-red-500 font-bold text-xs mb-3 uppercase tracking-widest">المبلغ المتبقي</p>
+                                <p class="serif text-2xl font-bold text-red-600">{{ formatReceiptNumber((selectedStudent()?.totalFee || 0) - totalPaid()) }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div class="mb-10 print:mb-6">
+                        <p class="font-bold text-primary-950 mb-3 serif text-lg">ملاحظات إضافية:</p>
+                        <textarea [ngModel]="receiptNotes()" (ngModelChange)="receiptNotes.set($event)" 
+                                  class="w-full p-5 border border-primary-50 rounded-3xl bg-primary-50/30 text-primary-900 resize-none outline-none focus:ring-4 focus:ring-primary-600/10 transition-all print:bg-white print:border-none print:p-0 print:text-black print:resize-none font-medium" 
+                                  rows="3" placeholder="اكتب أي ملاحظات إضافية هنا..."></textarea>
+                    </div>
+
+                    <!-- Footer / Disclaimers -->
+                    <div class="border-t-2 border-primary-50 pt-10 mt-10">
+                        <div class="grid grid-cols-2 gap-10 text-sm text-primary-400 mb-10">
+                            <div>
+                                <p class="font-bold text-primary-950 mb-2 serif text-base">• ملاحظة هامة:</p>
+                                <p class="font-medium leading-relaxed">يعتبر هذا الوصل مستنداً رسمياً يثبت سداد القسط المذكور أعلاه، يرجى الاحتفاظ به لضمان حقوقكم المالية.</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-primary-950 mb-2 serif text-base">• تنويه:</p>
+                                <p class="font-medium leading-relaxed">في حال وجود أي استفسار أو اختلاف في البيانات، يرجى مراجعة قسم الحسابات في المدرسة خلال أوقات الدوام الرسمي.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mb-12">
+                            <p class="serif font-bold text-primary-700 italic text-lg">نتمنى لطلابنا الأعزاء دوام التوفيق والنجاح</p>
+                        </div>
+
+                        <div class="flex justify-between items-end mt-16 px-10">
+                            <div class="text-center">
+                                <p class="text-xs font-bold text-primary-300 mb-10 uppercase tracking-widest">توقيع أمين الصندوق</p>
+                                <div class="w-40 border-b-2 border-primary-100 border-dashed"></div>
+                            </div>
+                             <div class="text-center">
+                                <p class="text-xs font-bold text-primary-300 mb-10 uppercase tracking-widest">توقيع المدير / {{ settings().principalName }}</p>
+                                <div class="w-40 border-b-2 border-primary-100 border-dashed"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

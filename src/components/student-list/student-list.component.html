@@ -1,0 +1,76 @@
+
+<div class="bg-white dark:bg-[#1a1a14] p-10 rounded-4xl shadow-card border border-primary-100 dark:border-primary-900/30 transition-all duration-500 animate-fade-in">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+    <div>
+        <h1 class="serif text-3xl font-bold text-primary-950 dark:text-primary-50">قائمة الطلاب</h1>
+        <p class="text-sm text-primary-600/60 dark:text-primary-400/60 mt-2 font-medium">سجل شامل لجميع الطلاب وحالتهم المالية وتفاصيل الأقساط</p>
+    </div>
+    <a routerLink="/student/add" class="flex items-center gap-3 bg-primary-600 text-white px-8 py-4 rounded-2xl hover:bg-primary-700 transition-all text-sm font-bold shadow-xl shadow-primary-600/20 group">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      <span>إضافة طالب جديد</span>
+    </a>
+  </div>
+
+  @if (studentsWithCalculations().length > 0) {
+    <div class="overflow-x-auto rounded-3xl border border-primary-50 dark:border-primary-900/20">
+      <table class="w-full text-right">
+        <thead class="text-xs text-primary-500 dark:text-primary-400 uppercase bg-primary-50/50 dark:bg-white/5 font-bold">
+          <tr>
+            <th scope="col" class="px-8 py-6">#</th>
+            <th scope="col" class="px-8 py-6 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors" (click)="applySort('name')">
+              اسم الطالب @if(sortKey() === 'name') { <span class="text-primary-600">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span> }
+            </th>
+            <th scope="col" class="px-8 py-6 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors" (click)="applySort('class')">
+              الصف @if(sortKey() === 'class') { <span class="text-primary-600">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span> }
+            </th>
+            <th scope="col" class="px-8 py-6 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors" (click)="applySort('totalFee')">
+              القسط الكلي @if(sortKey() === 'totalFee') { <span class="text-primary-600">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span> }
+            </th>
+            <th scope="col" class="px-8 py-6 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors" (click)="applySort('totalPaid')">
+              الواصل @if(sortKey() === 'totalPaid') { <span class="text-primary-600">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span> }
+            </th>
+            <th scope="col" class="px-8 py-6 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors" (click)="applySort('remaining')">
+              المتبقي @if(sortKey() === 'remaining') { <span class="text-primary-600">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span> }
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-primary-50 dark:divide-primary-900/20">
+          @for (student of sortedStudents(); track student.id; let i = $index) {
+            <tr class="bg-white dark:bg-[#1a1a14] hover:bg-primary-50/30 dark:hover:bg-primary-900/10 cursor-pointer transition-all duration-300 group" (click)="viewStudent(student.id)">
+              <td class="px-8 py-6 text-primary-300 dark:text-primary-700 font-bold">{{ i + 1 }}</td>
+              <th scope="row" class="px-8 py-6 font-bold text-primary-950 dark:text-primary-50 whitespace-nowrap group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-2xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold text-sm border border-primary-100 dark:border-primary-800">
+                        {{ student.name.charAt(0) }}
+                    </div>
+                    {{ student.name }}
+                </div>
+              </th>
+              <td class="px-8 py-6 font-medium text-primary-700 dark:text-primary-300">{{ student.class }}</td>
+              <td class="px-8 py-6 font-bold text-primary-900 dark:text-primary-100">{{ formatCurrency(student.totalFee) }}</td>
+              <td class="px-8 py-6 text-primary-600 dark:text-primary-400 font-bold">{{ formatCurrency(student.totalPaid) }}</td>
+              <td class="px-8 py-6">
+                 @if(student.remaining > 0) {
+                    <span class="inline-block px-4 py-1.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold">{{ formatCurrency(student.remaining) }}</span>
+                 } @else {
+                    <span class="inline-block px-4 py-1.5 bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-xl text-xs font-bold">مكتمل</span>
+                 }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="text-center py-24 border-2 border-dashed border-primary-100 dark:border-primary-900/30 rounded-4xl bg-primary-50/20 dark:bg-white/5">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white dark:bg-primary-900/30 text-primary-200 dark:text-primary-800 mb-6 shadow-soft border border-primary-50 dark:border-primary-800">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        </div>
+      <h3 class="serif text-2xl font-bold text-primary-950 dark:text-primary-50 mb-2">لا يوجد طلاب مسجلين</h3>
+      <p class="text-primary-600/60 dark:text-primary-400/60 mb-8 max-w-sm mx-auto font-medium">لم تقم بإضافة أي طلاب إلى النظام بعد. ابدأ بإضافة أول طالب الآن لتتمكن من إدارة أقساطه.</p>
+      <a routerLink="/student/add" class="inline-flex items-center gap-3 bg-primary-600 text-white px-10 py-4 rounded-2xl hover:bg-primary-700 transition-all text-sm font-bold shadow-xl shadow-primary-600/20">
+        أضف أول طالب الآن
+      </a>
+    </div>
+  }
+</div>

@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>Student Installment Management</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Tajawal', 'Inter', 'system-ui', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+          },
+          colors: {
+            primary: {
+              DEFAULT: '#458B73',
+              50: '#eefcf6',
+              100: '#d5f5e8',
+              200: '#aee8d3',
+              300: '#7bd4b8',
+              400: '#4eb99a',
+              500: '#458B73',
+              600: '#2b7e65',
+              700: '#256553',
+              800: '#205043',
+              900: '#1b4238',
+              950: '#0e2520',
+            },
+            accent: {
+              DEFAULT: '#4eb99a',
+              light: '#aee8d3',
+            }
+          },
+          boxShadow: {
+            'soft': '0 4px 20px rgba(0, 0, 0, 0.03)',
+            'card': '0 2px 12px rgba(69, 139, 115, 0.05)',
+          },
+          borderRadius: {
+            '3xl': '1.5rem',
+            '4xl': '2rem',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #f5f5f0;
+    }
+    
+    .serif {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f5f5f0; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ccccad; 
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #458B73; 
+    }
+    .dark ::-webkit-scrollbar-track {
+        background: #1a1a14;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+        background: #3a3a29;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-section, #print-section * {
+        visibility: visible;
+      }
+      #print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background-color: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .dark .glass {
+      background: rgba(26, 26, 20, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://esm.sh/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://esm.sh/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://esm.sh/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@angular/core": "https://esm.sh/@angular/core@^21.1.2?external=rxjs",
+    "@angular/common": "https://esm.sh/@angular/common@^21.1.2?external=rxjs",
+    "@angular/common/http": "https://esm.sh/@angular/common@^21.1.2/http?external=rxjs",
+    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.1.2?external=rxjs",
+    "@angular/router": "https://esm.sh/@angular/router@^21.1.2?external=rxjs",
+    "@angular/platform-browser/animations": "https://esm.sh/@angular/platform-browser@^21.1.2/animations?external=rxjs",
+    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.1.2?external=rxjs",
+    "@angular/forms": "https://esm.sh/@angular/forms@^21.1.2?external=rxjs",
+    "d3": "https://esm.sh/d3@7.9.0",
+    "@angular/common/": "https://esm.sh/@angular/common@^21.1.5/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-[#0f172a] dark:text-gray-200 transition-colors duration-300">
+  <app-root></app-root>
+</body>
+</html>

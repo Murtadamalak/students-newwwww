@@ -1,0 +1,98 @@
+
+<div class="flex min-h-screen font-sans selection:bg-primary-100 selection:text-primary-900">
+  <!-- Sidebar Navigation -->
+  <aside class="flex-shrink-0 bg-white dark:bg-[#1a1a14] border-l border-primary-100 dark:border-primary-900/30 flex flex-col no-print shadow-soft z-20 transition-all duration-300 overflow-hidden" [class.w-80]="isSidebarOpen()" [class.w-0]="!isSidebarOpen()" [class.border-l-0]="!isSidebarOpen()">
+    <div class="w-80 flex flex-col h-full">
+      <div class="h-28 flex items-center justify-center border-b border-primary-50 dark:border-primary-900/20 flex-shrink-0">
+        <a routerLink="/" class="flex flex-col items-center gap-1 group">
+          @if(settings().schoolLogo) {
+              <img [src]="settings().schoolLogo" alt="Logo" class="w-12 h-12 object-contain transition-transform group-hover:scale-110">
+          } @else {
+              <div class="text-primary-600 dark:text-primary-400 transition-transform group-hover:scale-110" [innerHTML]="getIcon('logo')"></div>
+          }
+          <span class="text-xl font-bold serif text-primary-900 dark:text-primary-100 tracking-tight leading-tight text-center px-4">
+              {{ settings().schoolName }}
+          </span>
+        </a>
+      </div>
+      
+      <nav class="flex-grow p-8 overflow-y-auto">
+        <ul class="space-y-4">
+          @for (link of navLinks; track link.path) {
+            <li>
+              <a [routerLink]="link.path"
+                 routerLinkActive="bg-primary-600 text-white shadow-lg shadow-primary-600/20 scale-[1.02]"
+                 [routerLinkActiveOptions]="{exact: link.path === '/'}"
+                 class="flex items-center gap-4 px-5 py-4 text-primary-700/70 dark:text-primary-300/70 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-900 dark:hover:text-primary-100 rounded-2xl transition-all duration-300 font-bold text-sm group">
+                <span class="w-6 h-6 transition-transform group-hover:rotate-12" [innerHTML]="getIcon(link.icon)"></span>
+                <span>{{ link.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <div class="p-8 border-t border-primary-50 dark:border-primary-900/20">
+         <button (click)="toggleTheme()" class="w-full flex items-center justify-center gap-3 px-5 py-4 text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/30 hover:bg-primary-100 dark:hover:bg-primary-900/50 border border-primary-100 dark:border-primary-800 rounded-2xl transition-all duration-300 font-bold text-sm" aria-label="Toggle Dark Mode">
+            @if(isDarkMode()) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-500"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                <span>الوضع النهاري</span>
+            } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary-600"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                 <span>الوضع الليلي</span>
+            }
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col bg-primary-50 dark:bg-[#0f0f0a] h-screen overflow-hidden transition-colors duration-300">
+    <header class="h-28 flex items-center justify-between px-12 no-print flex-shrink-0">
+        <div class="flex items-center gap-6">
+            <button (click)="toggleSidebar()" class="p-3 rounded-2xl bg-white dark:bg-[#1a1a14] text-primary-600 dark:text-primary-400 shadow-sm border border-primary-100 dark:border-primary-900/30 hover:bg-primary-50 dark:hover:bg-primary-900/50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+            <div class="flex flex-col">
+                <h1 class="font-bold serif text-3xl text-primary-950 dark:text-primary-50 tracking-tight">مرحباً بك، {{ settings().accountantName }}</h1>
+                <p class="text-sm text-primary-600/70 dark:text-primary-400/70 font-medium">العام الدراسي {{ settings().academicYear }}</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="glass px-6 py-3 rounded-2xl shadow-soft flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-bold text-primary-500 uppercase tracking-wider">المحاسب</span>
+              <span class="text-sm font-bold text-primary-900 dark:text-primary-100">{{ settings().accountantName }}</span>
+            </div>
+          </div>
+        </div>
+    </header>
+
+    <main class="flex-grow px-12 pb-8 overflow-y-auto scroll-smooth">
+      <div class="max-w-7xl mx-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+
+    <footer class="h-14 flex-shrink-0 flex items-center justify-between px-12 text-xs font-bold text-primary-400 dark:text-primary-600 border-t border-primary-100 dark:border-primary-900/30 bg-white/50 dark:bg-[#1a1a14]/50 backdrop-blur-sm no-print">
+        <div class="flex items-center gap-6">
+          <span>تطوير وبرمجة مرتضى علاء</span>
+          <span>07876007620</span>
+        </div>
+        <span>حقوق النشر محفوظة &copy; {{ currentYear }}</span>
+    </footer>
+  </div>
+  
+  @if (notificationMessage()) {
+    <div class="fixed bottom-12 left-12 bg-primary-900 dark:bg-primary-100 text-white dark:text-primary-900 py-5 px-10 rounded-3xl shadow-2xl animate-fade-in z-50 font-bold flex items-center gap-4 border border-white/10 dark:border-black/10">
+      <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400 dark:text-green-600"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      {{ notificationMessage() }}
+    </div>
+  }
+</div>

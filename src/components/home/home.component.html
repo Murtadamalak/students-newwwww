@@ -1,0 +1,70 @@
+
+<div class="animate-fade-in space-y-12">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden rounded-4xl bg-primary-600 p-12 lg:p-20 text-white shadow-2xl shadow-primary-600/20">
+    <div class="relative z-10 max-w-2xl space-y-6">
+      <h2 class="serif text-5xl lg:text-7xl font-bold leading-tight tracking-tight">نظام إدارة الأقساط المدرسية</h2>
+      <p class="text-lg text-primary-100/80 leading-relaxed font-medium">
+        حل متكامل وحديث لإدارة بيانات الطلاب، تتبع الدفعات الشهرية، وإصدار التقارير المالية بدقة واحترافية عالية.
+      </p>
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a routerLink="/student/add" class="bg-white text-primary-900 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-primary-50 transition-all shadow-xl shadow-black/10 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          تسجيل طالب جديد
+        </a>
+        <a routerLink="/dashboard" class="bg-primary-700/50 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-primary-700 transition-all flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+          لوحة التحكم
+        </a>
+      </div>
+    </div>
+    
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+      <svg class="absolute -top-24 -left-24 w-96 h-96 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+  </section>
+
+  <!-- Features Bento Grid -->
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    @for (feature of features; track feature.title) {
+      <a [routerLink]="feature.link" 
+         class="group bg-white dark:bg-[#1a1a14] p-8 rounded-3xl border border-primary-100 dark:border-primary-900/30 shadow-card hover:shadow-2xl hover:shadow-primary-600/10 hover:-translate-y-2 transition-all duration-300">
+        <div class="w-16 h-16 rounded-2xl mb-6 flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6" [ngClass]="feature.color">
+          <div [innerHTML]="getIcon(feature.icon)"></div>
+        </div>
+        <h3 class="serif text-2xl font-bold text-primary-900 dark:text-primary-50 mb-3">{{ feature.title }}</h3>
+        <p class="text-primary-600/70 dark:text-primary-400/70 text-sm leading-relaxed font-medium">
+          {{ feature.description }}
+        </p>
+        <div class="mt-6 flex items-center gap-2 text-primary-600 dark:text-primary-400 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+          <span>ابدأ الآن</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </div>
+      </a>
+    }
+  </section>
+
+  <!-- Quick Stats / Info -->
+  <section class="bg-primary-100/50 dark:bg-primary-900/10 rounded-4xl p-10 border border-primary-100 dark:border-primary-900/20">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+      <div class="space-y-4 max-w-xl">
+        <h2 class="serif text-3xl font-bold text-primary-950 dark:text-primary-50">نظام ذكي لإدارة المدرسة</h2>
+        <p class="text-primary-700/70 dark:text-primary-300/70 leading-relaxed font-medium">
+          تم تصميم هذا النظام ليوفر لك تجربة سلسة في إدارة الشؤون المالية للطلاب. من تتبع الأقساط المتأخرة إلى إصدار وصولات القبض، كل شيء متاح بضغطة زر.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4 w-full lg:w-auto">
+        <div class="bg-white dark:bg-[#1a1a14] p-6 rounded-3xl shadow-soft border border-primary-50 dark:border-primary-900/20 text-center">
+          <span class="block text-3xl font-bold text-primary-600 mb-1 serif">100%</span>
+          <span class="text-xs font-bold text-primary-400 uppercase tracking-widest">دقة البيانات</span>
+        </div>
+        <div class="bg-white dark:bg-[#1a1a14] p-6 rounded-3xl shadow-soft border border-primary-50 dark:border-primary-900/20 text-center">
+          <span class="block text-3xl font-bold text-primary-600 mb-1 serif">24/7</span>
+          <span class="text-xs font-bold text-primary-400 uppercase tracking-widest">وصول سريع</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

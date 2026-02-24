@@ -1,0 +1,146 @@
+
+<div class="max-w-4xl mx-auto space-y-10 animate-fade-in pb-16">
+  
+  <div class="bg-white dark:bg-[#1a1a14] p-10 rounded-4xl shadow-card border border-primary-100 dark:border-primary-900/30 transition-all duration-500">
+    <div class="mb-10 pb-8 border-b border-primary-50 dark:border-primary-900/20 flex justify-between items-center">
+      <div>
+        <h1 class="serif text-3xl font-bold text-primary-950 dark:text-primary-50 flex items-center gap-4">
+          <div class="w-12 h-12 bg-primary-50 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center text-primary-600 dark:text-primary-400 border border-primary-100 dark:border-primary-800 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.39a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          إعدادات النظام
+        </h1>
+        <p class="text-sm text-primary-600/60 dark:text-primary-400/60 mt-2 font-medium">تحكم في هوية المدرسة، السنة الدراسية، وتفضيلات واجهة المستخدم.</p>
+      </div>
+    </div>
+
+    <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            
+            <!-- School Logo -->
+            <div class="md:col-span-2 flex flex-col items-center justify-center p-10 border-2 border-dashed border-primary-100 dark:border-primary-900/30 rounded-3xl bg-primary-50/20 dark:bg-primary-900/5 group transition-all hover:bg-primary-50/50 dark:hover:bg-primary-900/10">
+                 @if(settingsForm.get('schoolLogo')?.value) {
+                    <div class="relative group/logo">
+                        <img [src]="settingsForm.get('schoolLogo')?.value" class="h-40 w-40 object-contain rounded-3xl shadow-xl bg-white p-4 border border-primary-50">
+                        <button type="button" (click)="removeLogo()" class="absolute -top-4 -right-4 bg-red-500 text-white rounded-2xl p-2 shadow-xl hover:bg-red-600 transition-all transform hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <p class="text-xs text-primary-600 font-bold mt-6 uppercase tracking-widest">تم تحميل شعار المدرسة بنجاح</p>
+                 } @else {
+                    <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 rounded-3xl flex items-center justify-center text-primary-300 dark:text-primary-700 mb-5 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                    <p class="text-sm font-bold text-primary-400 dark:text-primary-600 mb-3 uppercase tracking-widest">شعار المؤسسة التعليمية</p>
+                 }
+                 <label class="mt-4 cursor-pointer">
+                    <span class="bg-primary-600 text-white px-8 py-3 rounded-2xl text-sm font-bold hover:bg-primary-700 transition-all shadow-lg shadow-primary-600/20 inline-block">
+                        {{ settingsForm.get('schoolLogo')?.value ? 'تحديث الشعار' : 'اختيار شعار جديد' }}
+                    </span>
+                    <input type="file" class="hidden" (change)="onLogoSelected($event)" accept="image/*">
+                 </label>
+            </div>
+
+            <!-- General Info -->
+            <div class="space-y-6">
+                <h3 class="serif text-xl font-bold text-primary-950 dark:text-primary-50 border-b border-primary-50 dark:border-primary-900/20 pb-3">المعلومات الأساسية</h3>
+                <div>
+                    <label class="block mb-2 text-xs font-bold text-primary-400 uppercase tracking-widest">اسم المدرسة / المؤسسة</label>
+                    <input type="text" formControlName="schoolName" class="w-full bg-primary-50/30 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-800 text-primary-950 dark:text-primary-50 text-base rounded-2xl focus:ring-4 focus:ring-primary-600/10 focus:border-primary-600 block p-4 outline-none transition-all shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2 text-xs font-bold text-primary-400 uppercase tracking-widest">السنة الدراسية الحالية</label>
+                    <input type="text" formControlName="academicYear" placeholder="مثال: 2025-2026" class="w-full bg-primary-50/30 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-800 text-primary-950 dark:text-primary-50 text-base rounded-2xl focus:ring-4 focus:ring-primary-600/10 focus:border-primary-600 block p-4 outline-none transition-all shadow-sm">
+                </div>
+            </div>
+
+            <!-- Personalization -->
+            <div class="space-y-6">
+                <h3 class="serif text-xl font-bold text-primary-950 dark:text-primary-50 border-b border-primary-50 dark:border-primary-900/20 pb-3">التوقيعات والأسماء</h3>
+                <div>
+                    <label class="block mb-2 text-xs font-bold text-primary-400 uppercase tracking-widest">اسم مسؤول الحسابات</label>
+                    <input type="text" formControlName="accountantName" class="w-full bg-primary-50/30 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-800 text-primary-950 dark:text-primary-50 text-base rounded-2xl focus:ring-4 focus:ring-primary-600/10 focus:border-primary-600 block p-4 outline-none transition-all shadow-sm">
+                </div>
+                <div>
+                    <label class="block mb-2 text-xs font-bold text-primary-400 uppercase tracking-widest">اسم مدير المدرسة</label>
+                    <input type="text" formControlName="principalName" class="w-full bg-primary-50/30 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-800 text-primary-950 dark:text-primary-50 text-base rounded-2xl focus:ring-4 focus:ring-primary-600/10 focus:border-primary-600 block p-4 outline-none transition-all shadow-sm">
+                </div>
+            </div>
+
+            <!-- Appearance & Extras -->
+            <div class="md:col-span-2 pt-8 border-t border-primary-50 dark:border-primary-900/20 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Theme Toggle -->
+                <div class="flex items-center justify-between p-6 bg-primary-50/30 dark:bg-primary-900/10 rounded-3xl border border-primary-50 dark:border-primary-900/20 shadow-sm">
+                    <div>
+                        <p class="font-bold text-primary-950 dark:text-primary-50">مظهر التطبيق</p>
+                        <p class="text-xs text-primary-400 font-bold mt-1 uppercase tracking-widest">التبديل بين الوضع الليلي والنهاري</p>
+                    </div>
+                    <button type="button" (click)="toggleTheme()" [class]="isDarkMode() ? 'bg-primary-600' : 'bg-primary-200'" class="relative inline-flex h-9 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none shadow-inner">
+                        <span aria-hidden="true" [class]="isDarkMode() ? 'translate-x-0' : '-translate-x-7'" class="pointer-events-none inline-block h-8 w-8 transform rounded-full bg-white shadow-xl ring-0 transition duration-300 ease-in-out flex items-center justify-center">
+                            @if(isDarkMode()) {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary-600"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                            } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary-400"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                            }
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Backup -->
+                <div class="flex items-center justify-between p-6 bg-primary-50/30 dark:bg-primary-900/10 rounded-3xl border border-primary-50 dark:border-primary-900/20 shadow-sm">
+                     <div>
+                        <p class="font-bold text-primary-950 dark:text-primary-50">النسخ الاحتياطي</p>
+                        <p class="text-xs text-primary-400 font-bold mt-1 uppercase tracking-widest">تحميل نسخة شاملة من قاعدة البيانات</p>
+                    </div>
+                    <button type="button" (click)="downloadBackup()" class="bg-white dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 px-6 py-3 rounded-2xl text-xs font-bold transition-all border border-primary-100 dark:border-primary-800 shadow-sm hover:bg-primary-50 dark:hover:bg-primary-900/50 uppercase tracking-widest">
+                        تنزيل الملف
+                    </button>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2 pt-10 flex justify-end">
+                 <button type="submit" class="bg-primary-600 text-white px-12 py-4 rounded-2xl hover:bg-primary-700 transition-all font-bold shadow-xl shadow-primary-600/30 flex items-center gap-3 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    حفظ كافة الإعدادات
+                </button>
+            </div>
+        </div>
+    </form>
+  </div>
+
+  <!-- About Section -->
+  <div class="bg-primary-950 text-white p-12 rounded-4xl shadow-2xl relative overflow-hidden group">
+      <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+        <svg class="absolute -top-24 -left-24 w-96 h-96 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-10 relative z-10">
+          <div class="flex items-center gap-8">
+              <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-white backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <div>
+                  <h2 class="serif text-3xl font-bold mb-2">حول النظام</h2>
+                  <p class="text-primary-100/60 text-base font-medium leading-relaxed max-w-xl">تم تطوير هذا النظام بأحدث التقنيات ليوفر تجربة مستخدم استثنائية في إدارة الشؤون المالية والطلابية للمؤسسات التعليمية الحديثة.</p>
+              </div>
+          </div>
+          <div class="bg-white/5 p-8 rounded-3xl border border-white/10 min-w-[320px] backdrop-blur-sm">
+              <h3 class="font-bold text-white mb-5 border-b border-white/10 pb-3 serif text-lg">معلومات المطور</h3>
+              <div class="space-y-4 text-sm">
+                  <div class="flex items-center justify-between">
+                      <span class="text-primary-100/40 font-bold uppercase tracking-widest text-[10px]">الاسم الكامل</span>
+                      <span class="font-bold text-primary-50">مرتضى علاء</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                      <span class="text-primary-100/40 font-bold uppercase tracking-widest text-[10px]">رقم التواصل</span>
+                      <span class="font-mono font-bold text-primary-50 dir-ltr tracking-wider">07876007620</span>
+                  </div>
+                   <div class="flex items-center justify-between">
+                      <span class="text-primary-100/40 font-bold uppercase tracking-widest text-[10px]">إصدار النظام</span>
+                      <span class="font-mono font-bold text-primary-600 bg-white px-3 py-1 rounded-lg">v1.2.5</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
